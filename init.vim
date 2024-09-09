@@ -1,7 +1,7 @@
 "let g:loaded_clipboard_provider = 1
 let mapleader=","
 
-set tags=$HOME/Workspace/saucony/tags
+set tags=$HOME/Workspace/arena-legacy/tags
 
 nmap <F8> :TagbarToggle<CR>
 
@@ -40,6 +40,7 @@ set tabstop=3
 set shiftwidth=3
 set expandtab
 set list
+"set listchars=tab:>\ ,trail:-,nbsp:+
 "show file name
 set laststatus=2
 "Remove swap files
@@ -51,9 +52,10 @@ set signcolumn=number
 set autochdir
 
 "Set Colors
+set termguicolors
 "let g:solarized_termcolors=256
 set background=dark
-colorscheme solarized
+"colorscheme solarized
 
 set colorcolumn=100
 set cursorline
@@ -79,11 +81,13 @@ call plug#begin()
 Plug 'junegunn/fzf'
 Plug 'airblade/vim-gitgutter'
 Plug 'preservim/tagbar'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 "Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'honza/vim-snippets'
 Plug 'tpope/vim-vinegar'
 Plug 'mileszs/ack.vim'
 Plug 'ianding1/leetcode.vim'
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 call plug#end()
 
 highlight SignColumn      ctermbg=None
@@ -94,7 +98,6 @@ highlight GitGutterDelete ctermbg=None
 
 map <F5> :%s/\s\+$//<CR>
 
-set expandtab
 let g:ackprg = 'ag --vimgrep --smart-case --ignore-dir *\.bs*'
 cnoreabbrev ag Ack
 cnoreabbrev aG Ack
@@ -103,3 +106,15 @@ cnoreabbrev AG Ack
 
 let g:leetcode_browser='firefox'
 
+function Blame()
+        let s:filename = expand('%')
+        let s:lineNum = line('.')
+        let foo = system("git blame " . s:filename . " -L " . s:lineNum . "," . s:lineNum)
+        echo foo
+endfunction
+
+command Blame call Blame()
+
+colorscheme catppuccin-frappe " catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
+"Notes
+"ctags -R *
